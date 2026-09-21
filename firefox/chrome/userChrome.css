@@ -1,0 +1,151 @@
+/* =============================================================================
+   Firefox userChrome.css - Suite Unificada de Dotfiles
+   Integración de paleta oscura unificada: #03070d con acentos en cian y azul
+   ============================================================================= */
+
+:root {
+  /* Variables de la paleta unificada del repositorio */
+  --dots-bg: #03070d;
+  --dots-bg-alt: #050c16;
+  --dots-surface: #071a2b;
+  --dots-surface-hover: #0a223a;
+  --dots-border: #0e2a47;
+  --dots-border-focus: #22d3ee;
+  --dots-fg: #d7e9ff;
+  --dots-fg-muted: #52677d;
+  --dots-accent-cyan: #22d3ee;
+  --dots-accent-blue: #00a8ff;
+  --dots-tab-active-bg: #071a2b;
+  --dots-tab-active-fg: #7dd3fc;
+  --dots-tab-hover-bg: #0a223a;
+
+  /* Sobrescribir variables de tema nativas de Firefox */
+  --toolbar-bgcolor: var(--dots-bg) !important;
+  --toolbar-color: var(--dots-fg) !important;
+  --lwt-accent-color: var(--dots-bg) !important;
+  --lwt-text-color: var(--dots-fg) !important;
+  --toolbar-field-background-color: var(--dots-surface) !important;
+  --toolbar-field-color: var(--dots-fg) !important;
+  --toolbar-field-border-color: var(--dots-border) !important;
+  --toolbar-field-focus-background-color: var(--dots-surface) !important;
+  --toolbar-field-focus-color: var(--dots-fg) !important;
+  --toolbar-field-focus-border-color: var(--dots-accent-cyan) !important;
+  --chrome-content-separator-color: var(--dots-border) !important;
+}
+
+/* 1. Fondo global de la ventana y cajas principales */
+#main-window,
+#navigator-toolbox,
+#nav-bar,
+#PersonalToolbar,
+#toolbar-menubar,
+#TabsToolbar {
+  background-color: var(--dots-bg) !important;
+  color: var(--dots-fg) !important;
+}
+
+/* 2. Barra de navegación principal (URL y controles) */
+#nav-bar {
+  border-bottom: 1px solid var(--dots-border) !important;
+  box-shadow: none !important;
+}
+
+/* Barra de direcciones (URL bar) */
+#urlbar-background {
+  background-color: var(--dots-surface) !important;
+  border: 1px solid var(--dots-border) !important;
+  border-radius: 6px !important;
+}
+
+#urlbar[focused="true"] > #urlbar-background {
+  border-color: var(--dots-accent-cyan) !important;
+  box-shadow: 0 0 0 1px var(--dots-accent-cyan) !important;
+}
+
+#urlbar-input {
+  color: var(--dots-fg) !important;
+}
+
+/* 3. Barra de marcadores (PersonalToolbar) */
+#PersonalToolbar {
+  border-bottom: 1px solid var(--dots-border) !important;
+  padding: 2px 4px !important;
+}
+
+#PersonalToolbar .bookmark-item {
+  color: var(--dots-fg) !important;
+  border-radius: 4px !important;
+}
+
+#PersonalToolbar .bookmark-item:hover {
+  background-color: var(--dots-surface-hover) !important;
+  color: var(--dots-accent-cyan) !important;
+}
+
+/* 4. Barra lateral (Sidebar) y Pestañas Verticales (Vertical Tabs) */
+#sidebar-box,
+#sidebar,
+#sidebar-header,
+sidebar-main,
+#vertical-tabs-pane {
+  background-color: var(--dots-bg-alt) !important;
+  border-right: 1px solid var(--dots-border) !important;
+  color: var(--dots-fg) !important;
+}
+
+#sidebar-header {
+  border-bottom: 1px solid var(--dots-border) !important;
+  font-weight: 600 !important;
+}
+
+/* Elementos de pestaña vertical nativa */
+tab-item,
+.tabbrowser-tab {
+  border-radius: 6px !important;
+  margin: 2px 4px !important;
+  color: var(--dots-fg) !important;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.tabbrowser-tab:hover,
+tab-item:hover {
+  background-color: var(--dots-tab-hover-bg) !important;
+  color: #ffffff !important;
+}
+
+.tabbrowser-tab[selected="true"],
+tab-item[selected] {
+  background-color: var(--dots-tab-active-bg) !important;
+  color: var(--dots-tab-active-fg) !important;
+  border-left: 3px solid var(--dots-accent-cyan) !important;
+  font-weight: 600 !important;
+}
+
+/* Indicador de carga de pestaña */
+.tab-loading-burst,
+.tab-throbber {
+  fill: var(--dots-accent-cyan) !important;
+}
+
+/* 5. Separadores y botones */
+toolbarseparator {
+  background-color: var(--dots-border) !important;
+}
+
+toolbarbutton {
+  color: var(--dots-fg) !important;
+  border-radius: 4px !important;
+}
+
+toolbarbutton:hover:not([disabled="true"]) {
+  background-color: var(--dots-surface-hover) !important;
+  color: var(--dots-accent-cyan) !important;
+}
+
+/* Paneles contextuales y popups */
+menupopup,
+panel {
+  --panel-background: var(--dots-surface) !important;
+  --panel-color: var(--dots-fg) !important;
+  --panel-border-color: var(--dots-border) !important;
+}

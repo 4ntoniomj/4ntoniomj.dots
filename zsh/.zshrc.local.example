@@ -1,0 +1,29 @@
+# ==============================================================================
+# ~/.zshrc.local - Plantilla de configuraciones locales y privadas
+# ==============================================================================
+# Instrucciones de uso:
+# 1. Copia este archivo a tu home como ~/.zshrc.local:
+#    cp .zshrc.local.example ~/.zshrc.local
+# 2. Añade tus tokens, claves y configuraciones específicas de esta máquina.
+# 3. Este archivo está protegido en .gitignore y NUNCA debe subirse a Git.
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Claves y Tokens de API (Secretos)
+# ------------------------------------------------------------------------------
+# export GITHUB_TOKEN="<tu_token_de_github>"
+# export OPENAI_API_KEY="<tu_clave_de_openai>"
+# export ANTHROPIC_API_KEY="<tu_clave_de_anthropic>"
+
+# ------------------------------------------------------------------------------
+# 2. Rutas locales al PATH
+# ------------------------------------------------------------------------------
+# export PATH="$HOME/.local/bin/custom:$PATH"
+# export PATH="/opt/herramientas/bin:$PATH"
+
+# ------------------------------------------------------------------------------
+# 3. Alias y Funciones Locales
+# ------------------------------------------------------------------------------
+# alias trabajo="cd $HOME/Empresa/Proyectos"
+# alias vpn-conectar="sudo systemctl start vpn-cliente"
+# alias deploy-staging="bash $HOME/scripts/deploy.sh staging"

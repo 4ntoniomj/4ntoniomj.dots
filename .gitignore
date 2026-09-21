@@ -1,0 +1,116 @@
+# Secretos y Variables de Entorno
+.env
+*.env
+.env.*
+!.env.example
+*.local
+.zshrc.local
+*.secret
+*.secrets
+token*.json
+
+# Credenciales y Tokens de Nube / Paquetes
+.npmrc
+.pypirc
+.netrc
+credentials.json
+client_secret*.json
+.aws/
+.gcp/
+.azure/
+.kube/config
+kubeconfig*
+gh_token*
+github_token*
+
+# Claves Criptográficas y SSH
+*.pem
+*.key
+*.pkcs12
+*.pfx
+*.p12
+id_rsa*
+id_ed25519*
+id_ecdsa*
+id_dsa*
+known_hosts*
+authorized_keys*
+*.gpg
+secring.*
+
+# Historial de Comandos
+*.history
+.zsh_history
+.bash_history
+.python_history
+.node_repl_history
+.mysql_history
+.psql_history
+.sqlite_history
+.lesshst
+.wget-hsts
+
+# Agentes y Orquestación Interna
+.agents/
+.agent/
+AGENTS.md
+.AGENTS.md
+CLAUDE.md
+.claude/
+
+# Privacidad y Datos de Navegadores (Firefox / Chromium / etc.)
+places.sqlite*
+favicons.sqlite*
+logins.json
+key4.db
+key3.db
+cert9.db
+cert8.db
+cookies.sqlite*
+formhistory.sqlite*
+sessionstore*
+*.jsonlz4
+webappsstore.sqlite*
+storage/
+extensions.json
+compatibility.ini
+times.json
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+# Editores y Estados Efímeros
+*.shada
+shada/
+*.swp
+*.swo
+*~
+*.tmp
+*.bak
+*.un~
+undo/
+.vscode/
+.idea/
+
+# Cachés, Logs y Sockets
+.cache/
+*.cache
+*.log
+__pycache__/
+*.py[cod]
+*.pid
+*.sock
+core
+core.*
+
+# Copias de Seguridad y Empaquetados
+.dotfiles_backup_*/
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.7z
+
+# Archivos de Sistema
+.DS_Store
+Thumbs.db
