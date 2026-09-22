@@ -72,7 +72,7 @@ Uso: $(basename "$0") [OPCIONES]
 Script de automatización para la suite de dotfiles:
 - WezTerm: Terminal acelerada por GPU con paleta oscura unificada.
 - Zsh: Oh My Zsh, tema Powerlevel10k, zsh-autosuggestions y fzf.
-- Neovim: Editor modular con Lazy.nvim, LSP, Treesitter y Lualine.
+- Neovim: Distribución completa LazyVim con paleta de WezTerm, LSP, Treesitter y Lualine.
 - Firefox: Pestañas verticales con expand-on-hover, tema oscuro compacto y CSS unificado.
 
 Opciones:
@@ -669,7 +669,7 @@ main() {
     log_info "Próximos pasos:"
     log_info "  1. Reinicia tu terminal o ejecuta: exec zsh"
     log_info "  2. Añade tus secretos y tokens en: ~/.zshrc.local"
-    log_info "  3. Abre Neovim ('nvim') para sincronizar automáticamente plugins con Lazy.nvim"
+    log_info "  3. Abre Neovim ('nvim') para cargar y verificar la suite LazyVim"
     log_info "  4. Reinicia Firefox para aplicar user.js y userChrome.css"
   fi
 }

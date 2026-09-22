@@ -1,7 +1,2 @@
--- Leader key antes de cargar cualquier plugin
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
-require("config.options")
-require("config.keymaps")
+-- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
