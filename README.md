@@ -105,6 +105,7 @@ dots/
 - [nvim/lua/config/](nvim/lua/config): Configuración base de LazyVim:
   - `autocmds.lua`: Autocomandos de usuario (ocultación de marcas en Markdown).
   - `keymaps.lua`: Mapeo de teclas, formateo en guardado con `Ctrl+s`, splits, redimensión y explorador.
+  - `avatar.lua`: Módulo nativo de renderizado del avatar en Snacks Dashboard mediante extmarks TrueColor.
   - `lazy.lua`: Inicialización y bootstrap automático del ecosistema LazyVim.
   - `options.lua`: Ajustes de indentación (4 espacios), números relativos, portapapeles del sistema y comportamiento de búsqueda.
 - [nvim/lua/lualine/themes/wezterm.lua](nvim/lua/lualine/themes/wezterm.lua): Tema para la barra de estado Lualine sincronizado con los colores de WezTerm.
