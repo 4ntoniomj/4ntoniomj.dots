@@ -1,4 +1,5 @@
 local wezterm = require("wezterm")
+local mux = wezterm.mux
 
 local config = wezterm.config_builder()
 
@@ -196,5 +197,17 @@ else
 		config.default_prog = { "zellij" }
 	end
 end
+
+-- ============================================================
+-- ARRANQUE EN PANTALLA COMPLETA
+-- ============================================================
+
+wezterm.on("gui-startup", function(cmd)
+	local _, _, window = mux.spawn_window(cmd or {})
+	local gui_win = window:gui_window()
+	if gui_win then
+		gui_win:toggle_fullscreen()
+	end
+end)
 
 return config
