@@ -110,7 +110,7 @@ dots/
 - [nvim/lua/lualine/themes/wezterm.lua](nvim/lua/lualine/themes/wezterm.lua): Tema para la barra de estado Lualine sincronizado con los colores de WezTerm.
 - [nvim/lua/plugins/](nvim/lua/plugins): Plugins y extensiones:
   - `colorscheme.lua`: Configuración de LazyVim para activar `wezterm` como tema principal.
-  - `dashboard.lua`: Configuración de Snacks Dashboard con sección `terminal` para proyectar el avatar mini a color.
+  - `dashboard.lua`: Configuración de Snacks Dashboard con sección nativa ANSI para proyectar el avatar a color, con centrado dinámico y espaciado proporcional.
   - `markdown.lua`: Renderizado visual con `render-markdown.nvim`.
 
 ### Integración de Firefox
