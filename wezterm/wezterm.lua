@@ -174,4 +174,27 @@ config.keys = {
 	},
 }
 
+-- ============================================================
+-- PROGRAMA PREDETERMINADO (Zellij)
+-- ============================================================
+
+-- Asegurar ~/.local/bin en el PATH del entorno de WezTerm
+config.set_environment_variables = {
+	PATH = wezterm.home_dir .. "/.local/bin:" .. (os.getenv("PATH") or "/usr/local/bin:/usr/bin:/bin"),
+}
+
+-- Iniciar Zellij automáticamente si está instalado
+local zellij_local = wezterm.home_dir .. "/.local/bin/zellij"
+local zellij_check = io.open(zellij_local, "r")
+if zellij_check then
+	zellij_check:close()
+	config.default_prog = { zellij_local }
+else
+	local path_check = io.open("/usr/local/bin/zellij", "r") or io.open("/usr/bin/zellij", "r")
+	if path_check then
+		path_check:close()
+		config.default_prog = { "zellij" }
+	end
+end
+
 return config
