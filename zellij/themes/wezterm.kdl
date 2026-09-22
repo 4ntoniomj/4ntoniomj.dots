@@ -1,0 +1,16 @@
+// Tema WezTerm unificado para Zellij
+themes {
+    wezterm {
+        fg "#d7e9ff"
+        bg "#03070d"
+        black "#050b12"
+        red "#ff5577"
+        green "#36d98a"
+        yellow "#ffd166"
+        blue "#249cff"
+        magenta "#a78bfa"
+        cyan "#22d3ee"
+        white "#d7e9ff"
+        orange "#ff8a4c"
+    }
+}

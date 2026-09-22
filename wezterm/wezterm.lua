@@ -101,7 +101,8 @@ config.window_decorations = "RESIZE"
 -- BARRA DE PESTAÑAS
 -- ============================================================
 
-config.enable_tab_bar = true
+-- Barra nativa deshabilitada: Zellij gestiona las pestañas verticales
+config.enable_tab_bar = false
 config.use_fancy_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = false
 config.tab_bar_at_bottom = false

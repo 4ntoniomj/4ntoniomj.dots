@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # install.sh - Instalador y configurador automatizado de dotfiles
-# Suite: WezTerm + Zsh/Oh-My-Zsh/P10k + Neovim
+# Suite: WezTerm + Zellij + Zsh/Oh-My-Zsh/P10k + Neovim
 # ==============================================================================
 set -euo pipefail
 
@@ -71,6 +71,7 @@ Uso: $(basename "$0") [OPCIONES]
 
 Script de automatización para la suite de dotfiles:
 - WezTerm: Terminal acelerada por GPU con paleta oscura unificada.
+- Zellij: Multiplexor con pestañas verticales a la izquierda y paleta WezTerm.
 - Zsh: Oh My Zsh, tema Powerlevel10k, zsh-autosuggestions y fzf.
 - Neovim: Distribución completa LazyVim con paleta de WezTerm, LSP, Treesitter y Lualine.
 - Firefox: Pestañas verticales con expand-on-hover, tema oscuro compacto y CSS unificado.
@@ -194,6 +195,34 @@ install_system_packages() {
   fi
 
   log_info "Sistema detectado: ${OS_PRETTY_NAME:-Linux} (Gestor: $PM)"
+
+  # Zellij: comprobar en PATH o ~/.local/bin/zellij; si falta, descargar release v0.45.1
+  local zellij_installed=false
+  if command -v zellij >/dev/null 2>&1 || [[ -x "$HOME/.local/bin/zellij" ]]; then
+    zellij_installed=true
+  fi
+
+  if [[ "$zellij_installed" == false ]]; then
+    if [[ "$DRY_RUN" == true ]]; then
+      log_dry "Descargaría Zellij v0.45.1 (musl x86_64) a $HOME/.local/bin/zellij"
+    else
+      log_info "Instalando Zellij v0.45.1 desde GitHub Releases..."
+      mkdir -p "$HOME/.local/bin"
+      local zellij_tarball
+      zellij_tarball="$(mktemp --suffix=.tar.gz)"
+      if curl -fsSL "https://github.com/zellij-org/zellij/releases/download/v0.45.1/zellij-x86_64-unknown-linux-musl.tar.gz" -o "$zellij_tarball"; then
+        tar -xzf "$zellij_tarball" -C "$HOME/.local/bin" zellij
+        chmod +x "$HOME/.local/bin/zellij"
+        rm -f "$zellij_tarball"
+        log_success "Zellij instalado exitosamente en $HOME/.local/bin/zellij"
+      else
+        rm -f "$zellij_tarball"
+        log_warn "No se pudo descargar Zellij v0.45.1 automáticamente."
+      fi
+    fi
+  else
+    log_info "Zellij ya se encuentra instalado en el sistema."
+  fi
 
   # Comprobar qué herramientas ya existen
   local missing_tools=()
@@ -438,6 +467,7 @@ setup_dotfiles_symlinks() {
     "$DOTS_DIR/zsh/.p10k.zsh:$HOME/.p10k.zsh:.p10k.zsh"
     "$DOTS_DIR/wezterm/wezterm.lua:$HOME/.config/wezterm/wezterm.lua:wezterm.lua"
     "$DOTS_DIR/nvim:$HOME/.config/nvim:nvim"
+    "$DOTS_DIR/zellij:$HOME/.config/zellij:zellij"
   )
 
   # 1. Comprobar si ~/.config/wezterm existe como enlace o archivo en vez de directorio
@@ -471,7 +501,65 @@ setup_dotfiles_symlinks() {
 }
 
 # ------------------------------------------------------------------------------
-# 8. CONFIGURACIÓN DE FIREFOX (user.js y userChrome.css)
+# 8. CONFIGURACIÓN DE ZELLIJ (Plugins y Permisos)
+# ------------------------------------------------------------------------------
+setup_zellij_dotfiles() {
+  log_header "Configuración de Zellij (Plugins y Permisos)"
+
+  local wasm_file="$DOTS_DIR/zellij/plugins/zellij-vertical-tabs.wasm"
+  local wasm_url="https://github.com/cfal/zellij-vertical-tabs/releases/download/v0.1.0/zellij-vertical-tabs.wasm"
+
+  # 1. Comprobar / descargar plugin WASM si falta en el repositorio
+  if [[ ! -f "$wasm_file" ]]; then
+    if [[ "$DRY_RUN" == true ]]; then
+      log_dry "Descargaría plugin zellij-vertical-tabs.wasm a $wasm_file"
+    else
+      log_info "Descargando plugin zellij-vertical-tabs.wasm desde GitHub Releases..."
+      mkdir -p "$(dirname "$wasm_file")"
+      if curl -fsSL "$wasm_url" -o "$wasm_file"; then
+        chmod 644 "$wasm_file"
+        log_success "Plugin zellij-vertical-tabs.wasm descargado exitosamente."
+      else
+        log_warn "No se pudo descargar automáticamente zellij-vertical-tabs.wasm desde $wasm_url."
+      fi
+    fi
+  else
+    log_info "Plugin zellij-vertical-tabs.wasm ya se encuentra presente en el repositorio."
+  fi
+
+  # 2. Pre-autorización de permisos en ~/.cache/zellij/permissions.kdl
+  local cache_dir="$HOME/.cache/zellij"
+  local perm_file="$cache_dir/permissions.kdl"
+  local plugin_cfg_path="$HOME/.config/zellij/plugins/zellij-vertical-tabs.wasm"
+
+  if [[ "$DRY_RUN" == true ]]; then
+    log_dry "Aseguraría pre-autorización de permisos en $perm_file para $plugin_cfg_path"
+  else
+    mkdir -p "$cache_dir"
+    local needs_authorization=true
+    if [[ -f "$perm_file" ]] && grep -q "zellij-vertical-tabs.wasm" "$perm_file"; then
+      needs_authorization=false
+      log_info "Permisos para zellij-vertical-tabs ya autorizados en $perm_file."
+    fi
+
+    if [[ "$needs_authorization" == true ]]; then
+      cat <<EOF >> "$perm_file"
+"$plugin_cfg_path" {
+    ReadApplicationState
+    ChangeApplicationState
+}
+"file:~/.config/zellij/plugins/zellij-vertical-tabs.wasm" {
+    ReadApplicationState
+    ChangeApplicationState
+}
+EOF
+      log_success "Permisos pre-autorizados en $perm_file para zellij-vertical-tabs."
+    fi
+  fi
+}
+
+# ------------------------------------------------------------------------------
+# 9. CONFIGURACIÓN DE FIREFOX (user.js y userChrome.css)
 # ------------------------------------------------------------------------------
 get_firefox_profile_dir() {
   local ini_file="$1"
@@ -590,7 +678,7 @@ setup_firefox_dotfiles() {
 }
 
 # ------------------------------------------------------------------------------
-# 9. INICIALIZACIÓN DE PRIVACIDAD (~/.zshrc.local)
+# 10. INICIALIZACIÓN DE PRIVACIDAD (~/.zshrc.local)
 # ------------------------------------------------------------------------------
 setup_privacy_config() {
   log_header "Inicialización de privacidad local"
@@ -617,7 +705,7 @@ setup_privacy_config() {
 }
 
 # ------------------------------------------------------------------------------
-# 10. FLUJO PRINCIPAL
+# 11. FLUJO PRINCIPAL
 # ------------------------------------------------------------------------------
 main() {
   parse_arguments "$@"
@@ -655,6 +743,7 @@ main() {
   install_system_packages
   setup_zsh_dependencies
   setup_dotfiles_symlinks
+  setup_zellij_dotfiles
   setup_firefox_dotfiles
   setup_privacy_config
 
@@ -670,7 +759,8 @@ main() {
     log_info "  1. Reinicia tu terminal o ejecuta: exec zsh"
     log_info "  2. Añade tus secretos y tokens en: ~/.zshrc.local"
     log_info "  3. Abre Neovim ('nvim') para cargar y verificar la suite LazyVim"
-    log_info "  4. Reinicia Firefox para aplicar user.js y userChrome.css"
+    log_info "  4. Inicia Zellij ('zellij') para disfrutar de pestañas verticales a la izquierda"
+    log_info "  5. Reinicia Firefox para aplicar user.js y userChrome.css"
   fi
 }
 

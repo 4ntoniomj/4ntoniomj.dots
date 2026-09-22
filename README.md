@@ -1,10 +1,11 @@
-# Dotfiles: Suite Unificada (WezTerm + Zsh + Neovim + Firefox)
+# Dotfiles: Suite Unificada (WezTerm + Zellij + Zsh + Neovim + Firefox)
 
-Entorno de desarrollo coordinado para Linux que integra terminal acelerada por GPU, shell reactiva con autocompletado, editor modular de alto rendimiento y navegador web personalizado. Todos los componentes comparten una paleta cromática oscura (`#03070d` de fondo con acentos en cian y azul cielo) para evitar saltos visuales entre herramientas.
+Entorno de desarrollo coordinado para Linux que integra terminal acelerada por GPU, multiplexor con pestañas verticales a la izquierda, shell reactiva con autocompletado, editor modular de alto rendimiento y navegador web personalizado. Todos los componentes comparten una paleta cromática oscura (`#03070d` de fondo con acentos en cian y azul cielo) para evitar saltos visuales entre herramientas.
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
 │ WezTerm (WebGpu, paleta unificada, opacidad dinámica)       │
+│  ├─ Zellij (Pestañas verticales a la izquierda, paleta Wez) │
 │  ├─ Zsh + Oh My Zsh (Powerlevel10k, fzf previews, eza, bat) │
 │  ├─ Neovim (Lazy.nvim, LSP nativo, Treesitter, Lualine)     │
 │  └─ Firefox (Pestañas verticales, tema oscuro, userChrome)  │
@@ -13,7 +14,8 @@ Entorno de desarrollo coordinado para Linux que integra terminal acelerada por G
 
 ## Características destacadas
 
-- **Paleta visual coherente**: Mismos tonos hexadecimales en WezTerm, el tema de sintaxis de Neovim, la barra de estado Lualine y los estilos de Firefox.
+- **Paleta visual coherente**: Mismos tonos hexadecimales en WezTerm, Zellij, el tema de sintaxis de Neovim, la barra de estado Lualine y los estilos de Firefox.
+- **Zellij con pestañas verticales**: Sidebar lateral izquierdo con `zellij-vertical-tabs.wasm`, navegación instantánea mediante `Alt + [1-9]`, `Alt + n`, `Alt + w` y delegación total del control de pestañas sin barras duplicadas en WezTerm.
 - **Neovim con LazyVim**: Distribución completa con LazyVim, servidores de lenguaje integrados con Mason (`lua_ls`, `bashls`), árboles sintácticos con Treesitter, explorador y buscador rápido Snacks, y autocompletado de alto rendimiento.
 - **Zsh rápido y guiado**: Prompt instantáneo con Powerlevel10k, autocompletado en tiempo real y atajos de búsqueda difusa con fzf.
 - **Instalación segura e idempotente**: Respaldo automático de configuraciones existentes en `~/.dotfiles_backup_<timestamp>`, comprobación de comandos y soporte de ejecución simulada (`--dry-run`).
@@ -59,7 +61,7 @@ El script [install.sh](install.sh) admite varios modos de uso:
 
 ### Respaldo automático de seguridad
 
-Si detecta que ya existen archivos en `~/.zshrc`, `~/.p10k.zsh`, `~/.config/wezterm/wezterm.lua`, `~/.config/nvim` o en el perfil de Firefox (`user.js`, `chrome/userChrome.css`) y no apuntan a este repositorio:
+Si detecta que ya existen archivos en `~/.zshrc`, `~/.p10k.zsh`, `~/.config/wezterm/wezterm.lua`, `~/.config/nvim`, `~/.config/zellij` o en el perfil de Firefox (`user.js`, `chrome/userChrome.css`) y no apuntan a este repositorio:
 1. Crea un directorio con marca de tiempo: `~/.dotfiles_backup_<YYYYMMDD_HHMMSS>`.
 2. Traslada allí los archivos originales antes de generar cualquier enlace simbólico.
 3. Notifica en consola la ruta exacta donde se guardó la copia de seguridad.
@@ -76,7 +78,15 @@ dots/
 │   └── chrome/
 │       └── userChrome.css      # Estilos CSS con la paleta cromática de la suite
 ├── wezterm/
-│   └── wezterm.lua             # Fuente, paleta, pestañas, opacidad y atajos
+│   └── wezterm.lua             # Fuente, paleta, pestañas desactivadas, opacidad y atajos
+├── zellij/
+│   ├── config.kdl             # Configuración principal, tema wezterm, default layout y atajos
+│   ├── layouts/
+│   │   └── vertical-tabs.kdl  # Layout con barra de pestañas vertical a la izquierda y status bar
+│   ├── plugins/
+│   │   └── zellij-vertical-tabs.wasm # Plugin WebAssembly compilado para pestañas laterales
+│   └── themes/
+│       └── wezterm.kdl        # Paleta de colores WezTerm portada a Zellij
 ├── zsh/
 │   ├── .zshrc                 # Shell interactiva, plugins, fzf y aliases
 │   ├── .p10k.zsh              # Configuración gráfica de Powerlevel10k
@@ -92,10 +102,13 @@ dots/
         └── plugins/           # colorscheme.lua, dashboard.lua, markdown.lua
 ```
 
-- [install.sh](install.sh): Lógica de instalación defensiva, enlaces simbólicos idempotentes y control por flags.
+- [install.sh](install.sh): Lógica de instalación defensiva, enlaces simbólicos idempotentes, descarga de binarios/plugins y control por flags.
+- [zellij/config.kdl](zellij/config.kdl): Configuración general de Zellij, bindings directos `Alt + [1-9]`, `Alt + n`, `Alt + w` y modo sin bordes superfluos.
+- [zellij/layouts/vertical-tabs.kdl](zellij/layouts/vertical-tabs.kdl): Layout de Zellij que orquesta el panel lateral izquierdo mediante el plugin WASM de pestañas verticales y la barra inferior de estado.
+- [zellij/themes/wezterm.kdl](zellij/themes/wezterm.kdl): Definición de colores con los tonos exactos de WezTerm (`bg #03070d`, `fg #d7e9ff`, cian `#22d3ee`).
 - [firefox/user.js](firefox/user.js): Preferencias de personalización que activan la barra lateral moderna, pestañas verticales (*expand-on-hover*), densidad compacta, barra de marcadores fija y desactivación de telemetría y precargas de red.
 - [firefox/chrome/userChrome.css](firefox/chrome/userChrome.css): Hoja de estilos para la interfaz gráfica del navegador con los colores de la suite (`#03070d`, bordes `#0e2a47`, superficies `#071a2b` y acentos cian/azul).
-- [wezterm/wezterm.lua](wezterm/wezterm.lua): Configuración de WezTerm con ventana flotante, opacidad configurable y paleta unificada.
+- [wezterm/wezterm.lua](wezterm/wezterm.lua): Configuración de WezTerm con ventana flotante, opacidad configurable, paleta unificada y barra de pestañas nativa desactivada en favor de Zellij.
 - [zsh/.zshrc](zsh/.zshrc): Configuración de Zsh con plugins de Oh My Zsh, helpers de navegación y lectura diferida de secretos.
 - [zsh/.p10k.zsh](zsh/.p10k.zsh): Tema visual de Powerlevel10k adaptado al esquema de colores.
 - [zsh/.zshrc.local.example](zsh/.zshrc.local.example): Modelo para variables confidenciales locales.
@@ -113,6 +126,24 @@ dots/
   - `colorscheme.lua`: Configuración de LazyVim para activar `wezterm` como tema principal.
   - `dashboard.lua`: Configuración de Snacks Dashboard con sección nativa ANSI para proyectar el avatar a color, con centrado dinámico y espaciado proporcional.
   - `markdown.lua`: Renderizado visual con `render-markdown.nvim`.
+
+### Integración de Zellij
+
+Zellij opera como multiplexor de terminal principal dentro de WezTerm, ofreciendo una experiencia idéntica a las pestañas verticales de Firefox:
+
+1. **Barra lateral izquierda (`layouts/vertical-tabs.kdl`)**: 
+   - Utiliza el plugin WebAssembly `zellij-vertical-tabs.wasm` embebido en un panel lateral de 20 columnas (`pane size=20 borderless=true`).
+   - Muestra el índice de pestaña, nombre con truncado dinámico (`max_name_length 13`), flechas indicadoras de desbordamiento (`▲ +{count}` / `▼ +{count}`) e indicador activo cian (`▶ {index} {name}`).
+   - Incluye la barra de estado oficial `zellij:status-bar` en la parte inferior para mostrar atajos de contexto.
+
+2. **Tema unificado (`themes/wezterm.kdl`)**: 
+   - Define la paleta WezTerm con fondo profundo `#03070d`, texto `#d7e9ff`, cian vibrante `#22d3ee` para la pestaña activa, y separadores sutiles `#0e2a47`.
+
+3. **Coordinación con WezTerm**:
+   - Se deshabilita la barra de pestañas nativa de WezTerm (`config.enable_tab_bar = false`), evitando barras duplicadas y maximizando el área útil de la ventana.
+
+4. **Pre-autorización de permisos**:
+   - El instalador registra automáticamente los permisos requeridos (`ReadApplicationState`, `ChangeApplicationState`) en `~/.cache/zellij/permissions.kdl` para un arranque silencioso y sin diálogos interactivos de confirmación.
 
 ### Integración de Firefox
 
@@ -159,6 +190,20 @@ export PATH="$HOME/.local/bin/custom:$PATH"
 | `Ctrl + Shift + R` | Recargar configuración en caliente |
 | `Ctrl + Shift + F` | Alternar pantalla completa |
 | `Ctrl + Shift + O` | Alternar opacidad de fondo (entre 0.95 y 0.72) |
+
+#### Zellij (Multiplexor)
+
+| Atajo | Acción |
+| :--- | :--- |
+| `Alt + 1` .. `Alt + 9` | Salto directo a la pestaña número 1 a 9 |
+| `Alt + n` | Crear una nueva pestaña |
+| `Alt + w` | Cerrar pestaña actual |
+| `Alt + Flecha Izquierda` | Cambiar a la pestaña anterior |
+| `Alt + Flecha Derecha` | Cambiar a la pestaña siguiente |
+| `Ctrl + p` | Modo gestión de paneles (*panes*) |
+| `Ctrl + t` | Modo gestión de pestañas (*tabs*) |
+| `Ctrl + s` | Modo scroll y búsqueda en historial |
+| `Ctrl + q` | Salir de Zellij |
 
 #### Zsh y utilidades CLI
 
