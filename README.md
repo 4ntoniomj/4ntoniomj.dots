@@ -82,13 +82,14 @@ dots/
 │   ├── .p10k.zsh              # Configuración gráfica de Powerlevel10k
 │   └── .zshrc.local.example   # Plantilla para secretos y variables privadas
 └── nvim/
+    ├── avatar.txt             # Logo mini en arte ANSI TrueColor (24 bits)
     ├── colors/
     │   └── wezterm.lua        # Colorscheme nativo con la paleta de WezTerm
     ├── init.lua               # Entrada canónica de LazyVim
     └── lua/
         ├── config/            # autocmds.lua, keymaps.lua, lazy.lua, options.lua
         ├── lualine/themes/    # wezterm.lua (tema de la barra de estado)
-        └── plugins/           # colorscheme.lua, markdown.lua
+        └── plugins/           # colorscheme.lua, dashboard.lua, markdown.lua
 ```
 
 - [install.sh](install.sh): Lógica de instalación defensiva, enlaces simbólicos idempotentes y control por flags.
@@ -98,6 +99,7 @@ dots/
 - [zsh/.zshrc](zsh/.zshrc): Configuración de Zsh con plugins de Oh My Zsh, helpers de navegación y lectura diferida de secretos.
 - [zsh/.p10k.zsh](zsh/.p10k.zsh): Tema visual de Powerlevel10k adaptado al esquema de colores.
 - [zsh/.zshrc.local.example](zsh/.zshrc.local.example): Modelo para variables confidenciales locales.
+- [nvim/avatar.txt](nvim/avatar.txt): Logo personalizado de cabecera en arte ANSI TrueColor (24 bits) con colores reales (cabello castaño, piel y camiseta blanca).
 - [nvim/colors/wezterm.lua](nvim/colors/wezterm.lua): Colorscheme nativo de Neovim que implementa la paleta de WezTerm en el editor, Treesitter, diagnósticos LSP, Snacks, GitSigns, Bufferline y WhichKey.
 - [nvim/init.lua](nvim/init.lua): Carga canónica de LazyVim (`require("config.lazy")`).
 - [nvim/lua/config/](nvim/lua/config): Configuración base de LazyVim:
@@ -108,6 +110,7 @@ dots/
 - [nvim/lua/lualine/themes/wezterm.lua](nvim/lua/lualine/themes/wezterm.lua): Tema para la barra de estado Lualine sincronizado con los colores de WezTerm.
 - [nvim/lua/plugins/](nvim/lua/plugins): Plugins y extensiones:
   - `colorscheme.lua`: Configuración de LazyVim para activar `wezterm` como tema principal.
+  - `dashboard.lua`: Configuración de Snacks Dashboard con sección `terminal` para proyectar el avatar mini a color.
   - `markdown.lua`: Renderizado visual con `render-markdown.nvim`.
 
 ### Integración de Firefox
