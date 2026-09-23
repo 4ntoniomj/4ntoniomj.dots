@@ -87,6 +87,7 @@ shada/
 *~
 *.tmp
 *.bak
+*.bak.*
 *.un~
 undo/
 .vscode/

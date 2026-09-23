@@ -501,7 +501,29 @@ setup_dotfiles_symlinks() {
 }
 
 # ------------------------------------------------------------------------------
-# 8. CONFIGURACIÓN DE ZELLIJ (Plugins y Permisos)
+# 8. CONFIGURACIÓN DE WEZTERM (Overrides Flatpak / Wayland)
+# ------------------------------------------------------------------------------
+setup_wezterm_environment() {
+  log_header "Configuración de entorno para WezTerm"
+
+  # Si WezTerm está instalado como Flatpak, garantizar acceso a los temas de cursor del host en Wayland
+  if command -v flatpak >/dev/null 2>&1 && flatpak list --app 2>/dev/null | grep -q "org.wezfurlong.wezterm"; then
+    log_info "Detectado WezTerm vía Flatpak. Configurando overrides para tema de cursor en Wayland..."
+    if [[ "$DRY_RUN" == true ]]; then
+      log_dry "flatpak override --user --env=XCURSOR_PATH=/run/host/share/icons:~/.icons:~/.local/share/icons --env=XCURSOR_THEME=Yaru --env=XCURSOR_SIZE=24 org.wezfurlong.wezterm"
+    else
+      flatpak override --user \
+        --env=XCURSOR_PATH=/run/host/share/icons:~/.icons:~/.local/share/icons \
+        --env=XCURSOR_THEME=Yaru \
+        --env=XCURSOR_SIZE=24 \
+        org.wezfurlong.wezterm 2>/dev/null || true
+      log_success "Overrides de cursor para WezTerm Flatpak aplicados correctamente."
+    fi
+  fi
+}
+
+# ------------------------------------------------------------------------------
+# 9. CONFIGURACIÓN DE ZELLIJ (Plugins y Permisos)
 # ------------------------------------------------------------------------------
 setup_zellij_dotfiles() {
   log_header "Configuración de Zellij (Plugins y Permisos)"
@@ -743,6 +765,7 @@ main() {
   install_system_packages
   setup_zsh_dependencies
   setup_dotfiles_symlinks
+  setup_wezterm_environment
   setup_zellij_dotfiles
   setup_firefox_dotfiles
   setup_privacy_config

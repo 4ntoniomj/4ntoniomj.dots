@@ -127,6 +127,9 @@ config.window_frame = {
 config.default_cursor_style = "BlinkingBar"
 config.cursor_blink_rate = 600
 
+-- Ocultar el puntero del ratón al escribir y mostrarlo al moverlo
+config.hide_mouse_cursor_when_typing = true
+
 -- ============================================================
 -- TERMINAL
 -- ============================================================
