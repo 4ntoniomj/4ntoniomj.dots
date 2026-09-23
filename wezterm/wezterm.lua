@@ -202,14 +202,14 @@ else
 end
 
 -- ============================================================
--- ARRANQUE EN PANTALLA COMPLETA
+-- ARRANQUE MAXIMIZADO (Modo ventana completa)
 -- ============================================================
 
 wezterm.on("gui-startup", function(cmd)
 	local _, _, window = mux.spawn_window(cmd or {})
 	local gui_win = window:gui_window()
 	if gui_win then
-		gui_win:toggle_fullscreen()
+		gui_win:maximize()
 	end
 end)
 

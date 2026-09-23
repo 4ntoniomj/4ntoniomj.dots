@@ -108,7 +108,7 @@ dots/
 - [zellij/themes/wezterm.kdl](zellij/themes/wezterm.kdl): Definición de colores con los tonos exactos de WezTerm (`bg #03070d`, `fg #d7e9ff`, cian `#22d3ee`).
 - [firefox/user.js](firefox/user.js): Preferencias de personalización que activan la barra lateral moderna, pestañas verticales (*expand-on-hover*), densidad compacta, barra de marcadores fija y desactivación de telemetría y precargas de red.
 - [firefox/chrome/userChrome.css](firefox/chrome/userChrome.css): Hoja de estilos para la interfaz gráfica del navegador con los colores de la suite (`#03070d`, bordes `#0e2a47`, superficies `#071a2b` y acentos cian/azul).
-- [wezterm/wezterm.lua](wezterm/wezterm.lua): Configuración de WezTerm con arranque automático en pantalla completa, opacidad configurable, paleta unificada y barra de pestañas nativa desactivada en favor de Zellij.
+- [wezterm/wezterm.lua](wezterm/wezterm.lua): Configuración de WezTerm con arranque automático maximizado (modo ventana completa), opacidad configurable, paleta unificada y barra de pestañas nativa desactivada en favor de Zellij.
 - [zsh/.zshrc](zsh/.zshrc): Configuración de Zsh con plugins de Oh My Zsh, helpers de navegación y lectura diferida de secretos.
 - [zsh/.p10k.zsh](zsh/.p10k.zsh): Tema visual de Powerlevel10k adaptado al esquema de colores.
 - [zsh/.zshrc.local.example](zsh/.zshrc.local.example): Modelo para variables confidenciales locales.
@@ -191,7 +191,7 @@ export PATH="$HOME/.local/bin/custom:$PATH"
 | `Ctrl + Shift + F` | Alternar pantalla completa |
 | `Ctrl + Shift + O` | Alternar opacidad de fondo (entre 0.95 y 0.72) |
 
-*Nota: WezTerm arranca automáticamente en pantalla completa para una integración inmersiva con Zellij.*
+*Nota: WezTerm arranca automáticamente maximizado (modo ventana completa) para mantener visible la barra superior del sistema (reloj, estado y aplicaciones).*
 
 #### Zellij (Multiplexor)
 
